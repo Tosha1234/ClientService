@@ -1,14 +1,22 @@
 package toha.shelepov.clientService.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import toha.shelepov.clientService.DAO.OrderDAO;
 
 @Controller
+@RequestMapping("/orders")
 public class ClientServiceController {
 
-    @RequestMapping(value = "/orders", method = RequestMethod.GET)
-    public String getClientPage() {
+    @Autowired
+    OrderDAO orderDAO;
+
+    @GetMapping
+    public String getClientPage(Model model) {
+        model.addAttribute("list", orderDAO.getAll());
         return "ClientPage";
     }
 }

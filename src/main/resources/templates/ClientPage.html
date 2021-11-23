@@ -5,49 +5,46 @@
     <title>Client Page</title>
 </head>
 <body>
-    <table>
+
+<table border="4" align="center">
+    <tr>
+        <th align="center">
+            ID
+        </th>
+        <th align="center">
+            Number order
+        </th>
+        <th align="center">
+            Price
+        </th>
+        <th align="center">
+            Date of ordering
+        </th>
+        <th align="center">
+            Status
+        </th>
+    </tr>
+    <th:block th:each="order : ${list}" >
         <tr>
-            <th>
-                ID
-            </th>
-            <th>
-                Namber product
-            </th>
-            <th>
-                Name product
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                Date of ordering
-            </th>
-            <th>
-                Status
-            </th>
-        </tr>
-        <tr>
-            <td>
+            <td align="center" th:text="${order.getId()}">
                 1
             </td>
-            <td>
+            <td align="center" th:text="${order.getNumberOrder()}">
                 1
             </td>
-            <td>
-                Table
-            </td>
-            <td>
+            <td align="center" th:text="${order.getPrice()}">
                 100
             </td>
-            <td>
+            <td align="center" th:text="${order.getDateOfOrdering()}">
                 20.09.1992
             </td>
-            <td>
+            <td align="center" th:text="${order.getStatus()}">
                 edit
             </td>
         </tr>
+    </th:block>
 
-    </table>
+</table>
 <form action="" method="get">
     <button type="submit">
         create new order
