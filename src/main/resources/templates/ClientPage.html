@@ -9,45 +9,46 @@
 <table border="4" align="center">
     <tr>
         <th align="center">
-            ID
+            Номер заказа
         </th>
         <th align="center">
-            Number order
+            Количество товара
         </th>
         <th align="center">
-            Price
+            Сумма
         </th>
         <th align="center">
-            Date of ordering
+            Дата регистрации заказа
         </th>
         <th align="center">
-            Status
+            Статус
         </th>
+        <th></th>
     </tr>
     <th:block th:each="order : ${list}" >
         <tr>
             <td align="center" th:text="${order.getId()}">
-                1
             </td>
-            <td align="center" th:text="${order.getNumberOrder()}">
-                1
+            <td align="center" th:text="${order.getCountProduct()}">
             </td>
             <td align="center" th:text="${order.getPrice()}">
-                100
             </td>
             <td align="center" th:text="${order.getDateOfOrdering()}">
-                20.09.1992
             </td>
             <td align="center" th:text="${order.getStatus()}">
-                edit
+            </td>
+            <td>
+                <form th:method="GET" th:action="@{/orders/{id}(id=${order.getId()})}">
+                    <button>Посмотреть заказ</button>
+                </form>
             </td>
         </tr>
     </th:block>
 
 </table>
-<form action="" method="get">
-    <button type="submit">
-        create new order
+<form th:method="GET" th:action="@{/orders/new}">
+    <button>
+        Новый заказ
     </button>
 </form>
 </body>
