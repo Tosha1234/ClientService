@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Page</title>
+</head>
+<body>
+
+<table border="4" align="center">
+    <tr>
+        <th align="center">
+            Товар
+        </th>
+        <th align="center">
+            Цена
+        </th>
+        <th align="center">
+            Размер
+        </th>
+        <th align="center">
+            В наличии
+        </th>
+        <th align="center">Количество</th>
+        <th></th>
+    </tr>
+    <th:block th:each="product : ${list}">
+        <tr>
+            <form th:method="POST" th:action="@{product}" th:object="${product}">
+                <td align="center" th:text="${product.getName()}">
+                    <input type="text" name="name"  th:value="${count}"/>
+                </td>
+                <td align="center" >
+                    <input type="text" name="price" th:value="${product.getPrice()}"/>
+                </td>
+                <td align="center" th:text="${product.getHeight+'x'+product.getWidth()}">
+                    <input type="text" name="width" value="39"/>
+                </td>
+                <td align="center" >
+                    <input type="text" name="height" value="107" readonly/>
+                </td>
+
+                <td>
+                    <input type="text" name="count" th:value="${count}"/>
+                </td>
+                <td>
+                    <button type="submit">Добавить</button>
+                </td>
+            </form>
+        </tr>
+    </th:block>
+    <form th:method="GET" , th:action="@{save}">
+        <button>save</button>
+    </form>
+</table>
+</body>
+</html>

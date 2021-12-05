@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/orders/{id}(id=${clientOrder.getId()})}" th:object="${clientOrder}">
+    <label for="price">Enter price</label>
+    <input type="text" th:field="*{price}" id="price"/>
+    <br/>
+    <label for="status">Enter status</label>
+    <input type="text" th:field="*{status}" id="status"/>
+    <br/>
+
+    <input type="submit" value="update"/>
+</form>
+
+</body>
+</html>
