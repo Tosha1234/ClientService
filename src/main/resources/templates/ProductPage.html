@@ -21,27 +21,24 @@
             В наличии
         </th>
         <th align="center">Количество</th>
-        <th></th>
     </tr>
     <th:block th:each="product : ${list}">
         <tr>
             <form th:method="POST" th:action="@{product}" th:object="${product}">
                 <td align="center" th:text="${product.getName()}">
-                    <input type="text" name="name"  th:value="${count}"/>
                 </td>
-                <td align="center" >
-                    <input type="text" name="price" th:value="${product.getPrice()}"/>
+                <td align="center" th:text="${product.getPrice()}">
                 </td>
                 <td align="center" th:text="${product.getHeight+'x'+product.getWidth()}">
-                    <input type="text" name="width" value="39"/>
                 </td>
-                <td align="center" >
-                    <input type="text" name="height" value="107" readonly/>
+                <td align="center" th:text="${product.getCount()}">
+                </td>
+                <td>
+                    <input type="text" name="count" th:value="1"/>
                 </td>
 
-                <td>
-                    <input type="text" name="count" th:value="${count}"/>
-                </td>
+                <input type="hidden" name="id" th:value="${product.getId()}">
+
                 <td>
                     <button type="submit">Добавить</button>
                 </td>

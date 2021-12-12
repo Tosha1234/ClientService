@@ -5,6 +5,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -28,6 +31,16 @@ public class Order {
 
     @Column(name = "status")
     private String status="0";
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            })
+    @JoinTable(name = "order_product",
+            joinColumns = { @JoinColumn(name = "order_id") },
+            inverseJoinColumns = { @JoinColumn(name = "product_id") })
+    private Set<Product> productList = new HashSet<>();
 
 
     public long getId() {
@@ -68,5 +81,13 @@ public class Order {
 
     public void setCountProduct(int countProduct) {
         this.countProduct = countProduct;
+    }
+
+    public Set<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(Set<Product> productList) {
+        this.productList = productList;
     }
 }

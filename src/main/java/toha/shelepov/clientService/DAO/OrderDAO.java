@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import toha.shelepov.clientService.model.Order;
 import toha.shelepov.clientService.repository.OrderRepository;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class OrderDAO {
@@ -17,11 +18,14 @@ public class OrderDAO {
     }
 
     public Order getOrderId(long id) {
-        return orderRepository.findById(id).get();
+        Optional<Order> byId = orderRepository.findById(id);
+        Order order = byId.orElse(new Order());
+        return order;
     }
 
     public void deleteOrder(long id) {
-        orderRepository.delete(this.getOrderId(id));
+        Order orderId = this.getOrderId(id);
+        orderRepository.delete(orderId);
     }
 
     public void updateOrder(long id, Order order) {
@@ -30,7 +34,7 @@ public class OrderDAO {
         orderRepository.save(order1);
     }
 
-    public void createOrder(Order order) {
+    public void saveOrder(Order order) {
         orderRepository.save(order);
     }
 }

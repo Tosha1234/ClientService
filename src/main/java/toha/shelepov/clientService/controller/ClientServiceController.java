@@ -3,14 +3,12 @@ package toha.shelepov.clientService.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import toha.shelepov.clientService.DAO.BasketDaoSaport;
 import toha.shelepov.clientService.DAO.OrderDAO;
 import toha.shelepov.clientService.DAO.ProductDAO;
-import toha.shelepov.clientService.dto.ProductDto;
 import toha.shelepov.clientService.model.Order;
 import toha.shelepov.clientService.model.Product;
+import toha.shelepov.clientService.business.ClientServiceBusiness;
 
 @Controller
 @RequestMapping("/orders")
@@ -20,10 +18,11 @@ public class ClientServiceController {
     private OrderDAO orderDAO;
 
     @Autowired
-    ProductDAO productDAO;
+    private ProductDAO productDAO;
 
     @Autowired
-    BasketDaoSaport basketDaoSaport;
+    private ClientServiceBusiness clientServiceBusiness;
+
 
 
     @GetMapping
@@ -32,38 +31,36 @@ public class ClientServiceController {
         return "ClientPage";
     }
 
+    @GetMapping("/new")
+    public String createOrder() {
+        clientServiceBusiness.createOrder();
+        return "redirect:/orders/product";
+    }
+
     @GetMapping("/product")
     public String getProductPage(Model model) {
         model.addAttribute("list", productDAO.getAll());
         return "ProductPage";
     }
 
+    @PostMapping("/product")
+    public String addProduct(@ModelAttribute("product") Product product) {
+        clientServiceBusiness.addProduct(product);
+        return "redirect:/orders/product";
+    }
+
     @GetMapping("/save")
     public String saveOrder() {
-        basketDaoSaport.save();
+        clientServiceBusiness.saveOrder();
         return "redirect:/orders";
     }
 
     @PostMapping
     public String addOrder(@ModelAttribute("order") Order order) {
-        System.out.println(order.getId());
-        orderDAO.createOrder(order);
+        clientServiceBusiness.saveOrder(order);
         return "redirect:/orders";
     }
 
-    @PostMapping("/product")
-    public String addProduct(@ModelAttribute("product") ProductDto productDto) {
-        Product product = null;
-        try {
-            product = productDto.getProduct();
-            basketDaoSaport.addProduct(product);
-            return "redirect:/orders/product";
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-        return "redirect:/orders/product";
-    }
 
     @GetMapping("/{id}")
     public String editClientOrder(@PathVariable("id") long id, Model model,
@@ -73,22 +70,15 @@ public class ClientServiceController {
     }
 
     @DeleteMapping("/{id}")
-    public String deleteClientOrder(@PathVariable("id") int id) {
-        orderDAO.deleteOrder(id);
+    public String deleteClientOrder(@PathVariable("id") String id) {
+        clientServiceBusiness.deleteOrder(id);
         return "redirect:/orders";
     }
 
     @PatchMapping("/{id}")
     public String updateClientOrder(@ModelAttribute("order") Order order, @PathVariable("id") long id) {
-        orderDAO.updateOrder(id, order);
+        clientServiceBusiness.updateOrder(id, order);
         return "redirect:/orders";
     }
-
-    @GetMapping("/new")
-    public String newOrder() {
-        basketDaoSaport = new BasketDaoSaport();
-        return "redirect:/orders/product";
-    }
-
 
 }
