@@ -26,8 +26,8 @@ public class ClientServiceController {
 
 
     @GetMapping
-    public String getClientPage(Model model) {
-        model.addAttribute("list", orderDAO.getAll());
+    public String getAllOrders(Model model) {
+        clientServiceBusiness.getClientPage(model);
         return "ClientPage";
     }
 
@@ -39,12 +39,12 @@ public class ClientServiceController {
 
     @GetMapping("/product")
     public String getProductPage(Model model) {
-        model.addAttribute("list", productDAO.getAll());
+        clientServiceBusiness.getProductPage(model);
         return "ProductPage";
     }
 
     @PostMapping("/product")
-    public String addProduct(@ModelAttribute("product") Product product) {
+    public String addProductInOrder(@ModelAttribute("product") Product product) {
         clientServiceBusiness.addProduct(product);
         return "redirect:/orders/product";
     }
@@ -55,25 +55,25 @@ public class ClientServiceController {
         return "redirect:/orders";
     }
 
-    @PostMapping
-    public String addOrder(@ModelAttribute("order") Order order) {
-        clientServiceBusiness.saveOrder(order);
-        return "redirect:/orders";
-    }
-
-
-    @GetMapping("/{id}")
-    public String editClientOrder(@PathVariable("id") long id, Model model,
-                                  @ModelAttribute("order") Order order) {
-        model.addAttribute("clientOrder", orderDAO.getOrderId(id));
-        return "ClientOrder";
-    }
-
     @DeleteMapping("/{id}")
     public String deleteClientOrder(@PathVariable("id") String id) {
         clientServiceBusiness.deleteOrder(id);
         return "redirect:/orders";
     }
+//    @PostMapping
+//    public String addOrder(@ModelAttribute("order") Order order) {
+//        clientServiceBusiness.saveOrder(order);
+//        return "redirect:/orders";
+//    }
+
+
+    @GetMapping("/{id}")
+    public String editClientOrder(@PathVariable("id") long id, Model model) {
+        clientServiceBusiness.editClientOrder(id, model);
+        return "ClientOrder";
+    }
+
+
 
     @PatchMapping("/{id}")
     public String updateClientOrder(@ModelAttribute("order") Order order, @PathVariable("id") long id) {

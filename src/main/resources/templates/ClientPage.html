@@ -23,7 +23,6 @@
         <th align="center">
             Статус
         </th>
-        <th></th>
     </tr>
     <th:block th:each="order : ${list}" >
         <tr>
@@ -40,6 +39,11 @@
             <td>
                 <form th:method="GET" th:action="@{/orders/{id}(id=${order.getId()})}">
                     <button>Проверить заказ</button>
+                </form>
+            </td>
+            <td>
+                <form th:method="DELETE" th:action="@{/orders/{id}(id=${order.getId()})}">
+                    <button>Отменить заказ</button>
                 </form>
             </td>
         </tr>

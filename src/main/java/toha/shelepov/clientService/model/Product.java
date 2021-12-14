@@ -2,10 +2,6 @@ package toha.shelepov.clientService.model;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 
 @Entity
 @Table(name = "product")
@@ -33,14 +29,6 @@ public class Product {
 
     @Column(name = "count", nullable = false)
     private int count;
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
-            mappedBy = "productList")
-    private Set<Order> orderList = new HashSet<>();
 
     public long getId() {
         return id;
@@ -96,13 +84,5 @@ public class Product {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public Set<Order> getOrderList() {
-        return orderList;
-    }
-
-    public void setOrderList(Set<Order> orderList) {
-        this.orderList = orderList;
     }
 }
