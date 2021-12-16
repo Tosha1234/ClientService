@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "orders_product")
 @EntityListeners(AuditingEntityListener.class)
-public class OrderPoduct {
+public class OrderProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

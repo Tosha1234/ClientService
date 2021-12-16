@@ -15,15 +15,7 @@ import toha.shelepov.clientService.business.ClientServiceBusiness;
 public class ClientServiceController {
 
     @Autowired
-    private OrderDAO orderDAO;
-
-    @Autowired
-    private ProductDAO productDAO;
-
-    @Autowired
-    private ClientServiceBusiness clientServiceBusiness;
-
-
+    ClientServiceBusiness clientServiceBusiness;
 
     @GetMapping
     public String getAllOrders(Model model) {
@@ -73,7 +65,11 @@ public class ClientServiceController {
         return "ClientOrder";
     }
 
-
+    @DeleteMapping("/product/{id}")
+    public String deleteProductInOrder(@PathVariable("id") long id){
+        long l = clientServiceBusiness.deleteProductInOrder(id);
+        return "redirect:/orders/"+l;
+    }
 
     @PatchMapping("/{id}")
     public String updateClientOrder(@ModelAttribute("order") Order order, @PathVariable("id") long id) {

@@ -2,20 +2,54 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Order</title>
+    <title>Product Page</title>
 </head>
 <body>
 
-<form th:method="PATCH" th:action="@{/orders/{id}(id=${clientOrder.getId()})}" th:object="${clientOrder}">
-    <label for="price">Enter price</label>
-    <input type="text" th:field="*{price}" id="price"/>
-    <br/>
-    <label for="status">Enter status</label>
-    <input type="text" th:field="*{status}" id="status"/>
-    <br/>
+<table border="4" align="center">
+    <tr>
+        <th align="center">
+            Товар
+        </th>
+        <th align="center">
+            Размер
+        </th>
+        <th align="center">
+            Заказанно
+        </th>
+        <th align="center">
+            Цена за штуку
+        </th>
+        <th align="center">
+            Стоимость
+        </th>
+    </tr>
+    <th:block th:each="product : ${product}">
+        <tr>
+            <form th:method="DELETE" th:action="@{product/{id}(id=${product.getId()})}">
+                <td align="center" th:text="${product.getName()}">
+                </td>
+                <td align="center" th:text="${product.getHeight+'x'+product.getWidth()}">
+                </td>
+                <td align="center" th:text="${product.getCount()}">
+                </td>
+                <td align="center" th:text="${product.getPrice()}">
+                </td>
+                <td align="center" th:text="${product.getPrice()}*${product.getCount()}">
+                </td>
+                <td>
+                        <button>удалить</button>
+                </td>
+            </form>
+        </tr>
+    </th:block>
 
-    <input type="submit" value="update"/>
-</form>
 
+
+
+    <form th:method="GET" , th:action="@{save}">
+        <button>save</button>
+    </form>
+</table>
 </body>
 </html>

@@ -8,13 +8,11 @@ import toha.shelepov.clientService.DAO.OrderDAO;
 import toha.shelepov.clientService.DAO.OrderProductDAO;
 import toha.shelepov.clientService.DAO.ProductDAO;
 import toha.shelepov.clientService.model.Order;
-import toha.shelepov.clientService.model.OrderPoduct;
+import toha.shelepov.clientService.model.OrderProduct;
 import toha.shelepov.clientService.model.Product;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 //        log.fatal("fatal");
 //        log.error("error");
@@ -47,7 +45,7 @@ public class ClientServiceBusiness {
         } catch (NumberFormatException e) {
             log.info("method deleteOrder", e);
         }
-        orderProductDAO.getOrderProduct(id).forEach(OrderPoduct-> orderProductDAO.deleteOrder(OrderPoduct));
+        orderProductDAO.getOrderProduct(id).forEach(OrderPoduct -> orderProductDAO.deleteOrder(OrderPoduct));
         orderDAO.deleteOrder(id);
     }
 
@@ -62,14 +60,14 @@ public class ClientServiceBusiness {
         long id = product.getId();
         product = productDAO.getProductId(id);
 
-        long id1 =  order.getId();
-        OrderPoduct orderPoduct;
+        long id1 = order.getId();
+        OrderProduct orderPoduct;
         try {
             orderPoduct = orderProductDAO.getOrderProduct(id1, id);
             int countProduct = orderPoduct.getCountProduct();
-            orderPoduct.setCountProduct(countProduct +count);
-        }catch (Exception e){
-            orderPoduct=new OrderPoduct();
+            orderPoduct.setCountProduct(countProduct + count);
+        } catch (Exception e) {
+            orderPoduct = new OrderProduct();
             orderPoduct.setOrder(id1);
             orderPoduct.setProduct(id);
             orderPoduct.setCountProduct(count);
@@ -78,11 +76,11 @@ public class ClientServiceBusiness {
         orderProductDAO.saveOrderProduct(orderPoduct);
 
         int countProduct = order.getCountProduct();
-        order.setCountProduct(countProduct +count);
+        order.setCountProduct(countProduct + count);
 
         int price = order.getPrice();
         int price1 = product.getPrice();
-        order.setPrice(price + price1 *count);
+        order.setPrice(price + price1 * count);
         orderDAO.saveOrder(order);
     }
 
@@ -110,7 +108,26 @@ public class ClientServiceBusiness {
     }
 
     public void editClientOrder(long id, Model model) {
-        Order orderId = orderDAO.getOrderId(id);
-        model.addAttribute("clientOrder", orderId);
+
+        order = orderDAO.getOrderId(id);
+
+        List<OrderProduct> orderProductList = orderProductDAO.getOrderProduct(id);
+
+        List<Product> productList = orderProductList.stream().map(orderPoduct -> {
+            Product product = productDAO.getProductId(orderPoduct.getProduct());
+            product.setCount(orderPoduct.getCountProduct());
+            return product;
+        }).collect(Collectors.toList());
+
+        model.addAttribute("product", productList);
+    }
+
+    public long deleteProductInOrder(long id) {
+        OrderProduct orderProduct = orderProductDAO.getOrderProduct(order.getId(), id);
+        order.setCountProduct(order.getCountProduct()-orderProduct.getCountProduct());
+        order.setPrice(order.getPrice()-orderProduct.getCountProduct()*productDAO.getProductId(orderProduct.getProduct()).getPrice());
+        orderProductDAO.deleteOrder(orderProduct);
+        orderDAO.saveOrder(order);
+        return order.getId();
     }
 }
