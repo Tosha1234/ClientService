@@ -2,6 +2,7 @@ package toha.shelepov.clientService.restController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import toha.shelepov.clientService.DAO.OrderDAO;
@@ -21,4 +22,12 @@ public class OrdersRestController {
         List<Order> all = orderDAO.getAll();
         return all;
     }
+
+    @GetMapping("/{id}")
+    public Order orderReturnById(@PathVariable("id") String idParam){
+        int id = Integer.parseInt(idParam);
+        Order order = orderDAO.getOrderId(id);
+        return order;
+    }
+
 }
